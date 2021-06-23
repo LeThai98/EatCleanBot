@@ -22,37 +22,37 @@ namespace EatCleanAPI.Controllers
 
         // GET: api/Payments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Payments>>> GetPayments()
+        public async Task<ActionResult<IEnumerable<Payment>>> GetPayments()
         {
             return await _context.Payments.ToListAsync();
         }
 
         // GET: api/Payments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Payments>> GetPayments(int id)
+        public async Task<ActionResult<Payment>> GetPayment(int id)
         {
-            var payments = await _context.Payments.FindAsync(id);
+            var payment = await _context.Payments.FindAsync(id);
 
-            if (payments == null)
+            if (payment == null)
             {
                 return NotFound();
             }
 
-            return payments;
+            return payment;
         }
 
         // PUT: api/Payments/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPayments(int id, Payments payments)
+        public async Task<IActionResult> PutPayment(int id, Payment payment)
         {
-            if (id != payments.PaymentId)
+            if (id != payment.PaymentId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(payments).State = EntityState.Modified;
+            _context.Entry(payment).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace EatCleanAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PaymentsExists(id))
+                if (!PaymentExists(id))
                 {
                     return NotFound();
                 }
@@ -77,45 +77,31 @@ namespace EatCleanAPI.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Payments>> PostPayments(Payments payments)
+        public async Task<ActionResult<Payment>> PostPayment(Payment payment)
         {
-            _context.Payments.Add(payments);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (PaymentsExists(payments.PaymentId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _context.Payments.Add(payment);
+            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPayments", new { id = payments.PaymentId }, payments);
+            return CreatedAtAction("GetPayment", new { id = payment.PaymentId }, payment);
         }
 
         // DELETE: api/Payments/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Payments>> DeletePayments(int id)
+        public async Task<ActionResult<Payment>> DeletePayment(int id)
         {
-            var payments = await _context.Payments.FindAsync(id);
-            if (payments == null)
+            var payment = await _context.Payments.FindAsync(id);
+            if (payment == null)
             {
                 return NotFound();
             }
 
-            _context.Payments.Remove(payments);
+            _context.Payments.Remove(payment);
             await _context.SaveChangesAsync();
 
-            return payments;
+            return payment;
         }
 
-        private bool PaymentsExists(int id)
+        private bool PaymentExists(int id)
         {
             return _context.Payments.Any(e => e.PaymentId == id);
         }

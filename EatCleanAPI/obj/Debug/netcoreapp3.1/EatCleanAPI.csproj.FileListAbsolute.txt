@@ -139,3 +139,9 @@ C:\Users\HongThaiPC\Desktop\Practice\EatCleanAPI\EatCleanAPI\bin\Debug\netcoreap
 C:\Users\HongThaiPC\Desktop\Practice\EatCleanAPI\EatCleanAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\HongThaiPC\Desktop\Practice\EatCleanAPI\EatCleanAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\HongThaiPC\Desktop\Practice\EatCleanAPI\EatCleanAPI\obj\Debug\netcoreapp3.1\EatCleanAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\HongThaiPC\Desktop\Practice\EatCleanAPI\EatCleanAPI\bin\Debug\netcoreapp3.1\FluentValidation.dll
+C:\Users\HongThaiPC\Desktop\Practice\EatCleanAPI\EatCleanAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\HongThaiPC\Desktop\Practice\EatCleanAPI\EatCleanAPI\bin\Debug\netcoreapp3.1\Bricelam.EntityFrameworkCore.Pluralizer.dll
+C:\Users\HongThaiPC\Desktop\Practice\EatCleanAPI\EatCleanAPI\bin\Debug\netcoreapp3.1\FluentValidation.AspNetCore.dll
+C:\Users\HongThaiPC\Desktop\Practice\EatCleanAPI\EatCleanAPI\bin\Debug\netcoreapp3.1\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\HongThaiPC\Desktop\Practice\EatCleanAPI\EatCleanAPI\obj\Debug\netcoreapp3.1\EFCorePluralizer.cs

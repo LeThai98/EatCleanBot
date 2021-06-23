@@ -11,48 +11,48 @@ namespace EatCleanAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MenuDetailsController : ControllerBase
+    public class MenusDetailsController : ControllerBase
     {
         private readonly VegafoodBotContext _context;
 
-        public MenuDetailsController(VegafoodBotContext context)
+        public MenusDetailsController(VegafoodBotContext context)
         {
             _context = context;
         }
 
-        // GET: api/MenuDetails
+        // GET: api/MenusDetails
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MenuDetails>>> GetMenuDetails()
+        public async Task<ActionResult<IEnumerable<MenusDetail>>> GetMenusDetails()
         {
-            return await _context.MenuDetails.ToListAsync();
+            return await _context.MenusDetails.ToListAsync();
         }
 
-        // GET: api/MenuDetails/5
+        // GET: api/MenusDetails/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<MenuDetails>> GetMenuDetails(int id)
+        public async Task<ActionResult<MenusDetail>> GetMenusDetail(int id)
         {
-            var menuDetails = await _context.MenuDetails.FindAsync(id);
+            var menusDetail = await _context.MenusDetails.FindAsync(id);
 
-            if (menuDetails == null)
+            if (menusDetail == null)
             {
                 return NotFound();
             }
 
-            return menuDetails;
+            return menusDetail;
         }
 
-        // PUT: api/MenuDetails/5
+        // PUT: api/MenusDetails/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMenuDetails(int id, MenuDetails menuDetails)
+        public async Task<IActionResult> PutMenusDetail(int id, MenusDetail menusDetail)
         {
-            if (id != menuDetails.MenuId)
+            if (id != menusDetail.MenuId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(menuDetails).State = EntityState.Modified;
+            _context.Entry(menusDetail).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace EatCleanAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MenuDetailsExists(id))
+                if (!MenusDetailExists(id))
                 {
                     return NotFound();
                 }
@@ -73,20 +73,20 @@ namespace EatCleanAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/MenuDetails
+        // POST: api/MenusDetails
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<MenuDetails>> PostMenuDetails(MenuDetails menuDetails)
+        public async Task<ActionResult<MenusDetail>> PostMenusDetail(MenusDetail menusDetail)
         {
-            _context.MenuDetails.Add(menuDetails);
+            _context.MenusDetails.Add(menusDetail);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (MenuDetailsExists(menuDetails.MenuId))
+                if (MenusDetailExists(menusDetail.MenuId))
                 {
                     return Conflict();
                 }
@@ -96,28 +96,28 @@ namespace EatCleanAPI.Controllers
                 }
             }
 
-            return CreatedAtAction("GetMenuDetails", new { id = menuDetails.MenuId }, menuDetails);
+            return CreatedAtAction("GetMenusDetail", new { id = menusDetail.MenuId }, menusDetail);
         }
 
-        // DELETE: api/MenuDetails/5
+        // DELETE: api/MenusDetails/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<MenuDetails>> DeleteMenuDetails(int id)
+        public async Task<ActionResult<MenusDetail>> DeleteMenusDetail(int id)
         {
-            var menuDetails = await _context.MenuDetails.FindAsync(id);
-            if (menuDetails == null)
+            var menusDetail = await _context.MenusDetails.FindAsync(id);
+            if (menusDetail == null)
             {
                 return NotFound();
             }
 
-            _context.MenuDetails.Remove(menuDetails);
+            _context.MenusDetails.Remove(menusDetail);
             await _context.SaveChangesAsync();
 
-            return menuDetails;
+            return menusDetail;
         }
 
-        private bool MenuDetailsExists(int id)
+        private bool MenusDetailExists(int id)
         {
-            return _context.MenuDetails.Any(e => e.MenuId == id);
+            return _context.MenusDetails.Any(e => e.MenuId == id);
         }
     }
 }

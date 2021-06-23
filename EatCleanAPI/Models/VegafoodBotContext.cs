@@ -2,6 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
+// Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
+// If you have enabled NRTs for your project, then un-comment the following line:
+// #nullable disable
+
 namespace EatCleanAPI.Models
 {
     public partial class VegafoodBotContext : DbContext
@@ -15,13 +19,16 @@ namespace EatCleanAPI.Models
         {
         }
 
-        public virtual DbSet<MenuDetails> MenuDetails { get; set; }
-        public virtual DbSet<Menus> Menus { get; set; }
-        public virtual DbSet<OrderDetails> OrderDetails { get; set; }
-        public virtual DbSet<Orders> Orders { get; set; }
-        public virtual DbSet<Payments> Payments { get; set; }
-        public virtual DbSet<Products> Products { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<AppRole> AppRoles { get; set; }
+        public virtual DbSet<CustomerSentiment> CustomerSentiments { get; set; }
+        public virtual DbSet<Menu> Menus { get; set; }
+        public virtual DbSet<MenusDetail> MenusDetails { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+        public virtual DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -29,41 +36,53 @@ namespace EatCleanAPI.Models
             {
                 optionsBuilder.UseSqlServer("Name=Vegafood");
             }
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<MenuDetails>(entity =>
+            modelBuilder.Entity<AppRole>(entity =>
             {
-                entity.HasKey(e => new { e.MenuId, e.ProductId });
+                entity.ToTable("AppRole");
 
-                entity.Property(e => e.MenuId).HasColumnName("menuId");
+                entity.Property(e => e.Description).HasMaxLength(50);
 
-                entity.Property(e => e.ProductId).HasColumnName("productId");
-
-                entity.Property(e => e.Quantity).HasColumnName("quantity");
-
-                entity.HasOne(d => d.Menu)
-                    .WithMany(p => p.MenuDetails)
-                    .HasForeignKey(d => d.MenuId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MenuDetails_Menus");
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.MenuDetails)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MenuDetails_Products");
+                entity.Property(e => e.Name).HasMaxLength(30);
             });
 
-            modelBuilder.Entity<Menus>(entity =>
+            modelBuilder.Entity<CustomerSentiment>(entity =>
             {
-                entity.HasKey(e => e.MenuId);
+                entity.ToTable("CustomerSentiment");
 
-                entity.Property(e => e.MenuId)
-                    .HasColumnName("menuId")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.CustomerName).HasMaxLength(30);
+
+                entity.Property(e => e.Email).HasMaxLength(50);
+
+                entity.Property(e => e.FoodComment).HasMaxLength(30);
+
+                entity.Property(e => e.FoodPredict)
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+
+                entity.Property(e => e.NameByUser).HasMaxLength(30);
+
+                entity.Property(e => e.Phone).HasMaxLength(10);
+
+                entity.Property(e => e.ServiceComment).HasMaxLength(30);
+
+                entity.Property(e => e.ServicePredict)
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+
+                entity.Property(e => e.VegaComment).HasMaxLength(30);
+
+                entity.Property(e => e.VegaPredict)
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+            });
+
+            modelBuilder.Entity<Menu>(entity =>
+            {
+                entity.Property(e => e.MenuId).HasColumnName("menuId");
 
                 entity.Property(e => e.Description)
                     .HasColumnName("description")
@@ -78,35 +97,35 @@ namespace EatCleanAPI.Models
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<OrderDetails>(entity =>
+            modelBuilder.Entity<MenusDetail>(entity =>
             {
-                entity.HasKey(e => new { e.OrderId, e.MenuId });
+                entity.HasKey(e => new { e.MenuId, e.ProductId })
+                    .HasName("menusdetail_pk");
 
-                entity.Property(e => e.OrderId).HasColumnName("orderId");
+                entity.ToTable("MenusDetail");
 
                 entity.Property(e => e.MenuId).HasColumnName("menuId");
 
+                entity.Property(e => e.ProductId).HasColumnName("productId");
+
+                entity.Property(e => e.Quantity).HasColumnName("quantity");
+
                 entity.HasOne(d => d.Menu)
-                    .WithMany(p => p.OrderDetails)
+                    .WithMany(p => p.MenusDetails)
                     .HasForeignKey(d => d.MenuId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_OrderDetails_Menus");
+                    .HasConstraintName("FK_MenusDetail_Menus");
 
-                entity.HasOne(d => d.Order)
-                    .WithMany(p => p.OrderDetails)
-                    .HasForeignKey(d => d.OrderId)
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.MenusDetails)
+                    .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_OrderDetails_Orders");
+                    .HasConstraintName("FK_MenusDetail_Products");
             });
 
-            modelBuilder.Entity<Orders>(entity =>
+            modelBuilder.Entity<Order>(entity =>
             {
-                entity.HasKey(e => e.OrderId)
-                    .HasName("PK_Order");
-
-                entity.Property(e => e.OrderId)
-                    .HasColumnName("orderId")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.OrderId).HasColumnName("orderId");
 
                 entity.Property(e => e.Address)
                     .HasColumnName("address")
@@ -151,13 +170,31 @@ namespace EatCleanAPI.Models
                     .HasConstraintName("FK_Orders_Users");
             });
 
-            modelBuilder.Entity<Payments>(entity =>
+            modelBuilder.Entity<OrderDetail>(entity =>
             {
-                entity.HasKey(e => e.PaymentId);
+                entity.HasKey(e => new { e.OrderId, e.MenuId })
+                    .HasName("orderdetail_pk");
 
-                entity.Property(e => e.PaymentId)
-                    .HasColumnName("paymentId")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.OrderId).HasColumnName("orderId");
+
+                entity.Property(e => e.MenuId).HasColumnName("menuId");
+
+                entity.HasOne(d => d.Menu)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.MenuId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OrderDetails_Menus");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.OrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OrderDetails_Orders");
+            });
+
+            modelBuilder.Entity<Payment>(entity =>
+            {
+                entity.Property(e => e.PaymentId).HasColumnName("paymentId");
 
                 entity.Property(e => e.EmailAddress)
                     .HasColumnName("email_address")
@@ -171,14 +208,9 @@ namespace EatCleanAPI.Models
                     .IsFixedLength();
             });
 
-            modelBuilder.Entity<Products>(entity =>
+            modelBuilder.Entity<Product>(entity =>
             {
-                entity.HasKey(e => e.ProductId)
-                    .HasName("PK_Product");
-
-                entity.Property(e => e.ProductId)
-                    .HasColumnName("productId")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.ProductId).HasColumnName("productId");
 
                 entity.Property(e => e.Calories).HasColumnName("calories");
 
@@ -205,14 +237,35 @@ namespace EatCleanAPI.Models
                 entity.Property(e => e.Protein).HasColumnName("protein");
             });
 
-            modelBuilder.Entity<Users>(entity =>
+            modelBuilder.Entity<RefreshToken>(entity =>
             {
-                entity.HasKey(e => e.UserId)
-                    .HasName("PK_User");
+                entity.HasKey(e => e.TokenId)
+                    .HasName("PK__RefreshT__CB3C9E1728955239");
 
-                entity.Property(e => e.UserId)
-                    .HasColumnName("userId")
-                    .ValueGeneratedNever();
+                entity.ToTable("RefreshToken");
+
+                entity.Property(e => e.TokenId).HasColumnName("token_id");
+
+                entity.Property(e => e.CustomerId).HasColumnName("customer_id");
+
+                entity.Property(e => e.ExpiryDate)
+                    .HasColumnName("expiry_date")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Token)
+                    .HasColumnName("token")
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.RefreshTokens)
+                    .HasForeignKey(d => d.CustomerId)
+                    .HasConstraintName("FK_RefreshToken_Users");
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.UserId).HasColumnName("userId");
 
                 entity.Property(e => e.Email)
                     .HasColumnName("email")

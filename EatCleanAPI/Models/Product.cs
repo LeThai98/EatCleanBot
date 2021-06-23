@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
+// Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
+// If you have enabled NRTs for your project, then un-comment the following line:
+// #nullable disable
+
 namespace EatCleanAPI.Models
 {
-    public partial class Products
+    public partial class Product
     {
-        public Products()
+        public Product()
         {
-            MenuDetails = new HashSet<MenuDetails>();
+            MenusDetails = new HashSet<MenusDetail>();
         }
 
         public int ProductId { get; set; }
@@ -20,6 +24,6 @@ namespace EatCleanAPI.Models
         public float? Carb { get; set; }
         public float? Fat { get; set; }
 
-        public virtual ICollection<MenuDetails> MenuDetails { get; set; }
+        public virtual ICollection<MenusDetail> MenusDetails { get; set; }
     }
 }

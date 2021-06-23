@@ -22,37 +22,37 @@ namespace EatCleanAPI.Controllers
 
         // GET: api/OrderDetails
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderDetails>>> GetOrderDetails()
+        public async Task<ActionResult<IEnumerable<OrderDetail>>> GetOrderDetails()
         {
             return await _context.OrderDetails.ToListAsync();
         }
 
         // GET: api/OrderDetails/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<OrderDetails>> GetOrderDetails(int id)
+        public async Task<ActionResult<OrderDetail>> GetOrderDetail(int id)
         {
-            var orderDetails = await _context.OrderDetails.FindAsync(id);
+            var orderDetail = await _context.OrderDetails.FindAsync(id);
 
-            if (orderDetails == null)
+            if (orderDetail == null)
             {
                 return NotFound();
             }
 
-            return orderDetails;
+            return orderDetail;
         }
 
         // PUT: api/OrderDetails/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrderDetails(int id, OrderDetails orderDetails)
+        public async Task<IActionResult> PutOrderDetail(int id, OrderDetail orderDetail)
         {
-            if (id != orderDetails.OrderId)
+            if (id != orderDetail.OrderId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(orderDetails).State = EntityState.Modified;
+            _context.Entry(orderDetail).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace EatCleanAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrderDetailsExists(id))
+                if (!OrderDetailExists(id))
                 {
                     return NotFound();
                 }
@@ -77,16 +77,16 @@ namespace EatCleanAPI.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<OrderDetails>> PostOrderDetails(OrderDetails orderDetails)
+        public async Task<ActionResult<OrderDetail>> PostOrderDetail(OrderDetail orderDetail)
         {
-            _context.OrderDetails.Add(orderDetails);
+            _context.OrderDetails.Add(orderDetail);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (OrderDetailsExists(orderDetails.OrderId))
+                if (OrderDetailExists(orderDetail.OrderId))
                 {
                     return Conflict();
                 }
@@ -96,26 +96,26 @@ namespace EatCleanAPI.Controllers
                 }
             }
 
-            return CreatedAtAction("GetOrderDetails", new { id = orderDetails.OrderId }, orderDetails);
+            return CreatedAtAction("GetOrderDetail", new { id = orderDetail.OrderId }, orderDetail);
         }
 
         // DELETE: api/OrderDetails/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<OrderDetails>> DeleteOrderDetails(int id)
+        public async Task<ActionResult<OrderDetail>> DeleteOrderDetail(int id)
         {
-            var orderDetails = await _context.OrderDetails.FindAsync(id);
-            if (orderDetails == null)
+            var orderDetail = await _context.OrderDetails.FindAsync(id);
+            if (orderDetail == null)
             {
                 return NotFound();
             }
 
-            _context.OrderDetails.Remove(orderDetails);
+            _context.OrderDetails.Remove(orderDetail);
             await _context.SaveChangesAsync();
 
-            return orderDetails;
+            return orderDetail;
         }
 
-        private bool OrderDetailsExists(int id)
+        private bool OrderDetailExists(int id)
         {
             return _context.OrderDetails.Any(e => e.OrderId == id);
         }

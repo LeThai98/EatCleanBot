@@ -22,37 +22,37 @@ namespace EatCleanAPI.Controllers
 
         // GET: api/Orders
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Orders>>> GetOrders()
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
             return await _context.Orders.ToListAsync();
         }
 
         // GET: api/Orders/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Orders>> GetOrders(int id)
+        public async Task<ActionResult<Order>> GetOrder(int id)
         {
-            var orders = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders.FindAsync(id);
 
-            if (orders == null)
+            if (order == null)
             {
                 return NotFound();
             }
 
-            return orders;
+            return order;
         }
 
         // PUT: api/Orders/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrders(int id, Orders orders)
+        public async Task<IActionResult> PutOrder(int id, Order order)
         {
-            if (id != orders.OrderId)
+            if (id != order.OrderId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(orders).State = EntityState.Modified;
+            _context.Entry(order).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace EatCleanAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrdersExists(id))
+                if (!OrderExists(id))
                 {
                     return NotFound();
                 }
@@ -77,45 +77,31 @@ namespace EatCleanAPI.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Orders>> PostOrders(Orders orders)
+        public async Task<ActionResult<Order>> PostOrder(Order order)
         {
-            _context.Orders.Add(orders);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (OrdersExists(orders.OrderId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetOrders", new { id = orders.OrderId }, orders);
+            return CreatedAtAction("GetOrder", new { id = order.OrderId }, order);
         }
 
         // DELETE: api/Orders/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Orders>> DeleteOrders(int id)
+        public async Task<ActionResult<Order>> DeleteOrder(int id)
         {
-            var orders = await _context.Orders.FindAsync(id);
-            if (orders == null)
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null)
             {
                 return NotFound();
             }
 
-            _context.Orders.Remove(orders);
+            _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
 
-            return orders;
+            return order;
         }
 
-        private bool OrdersExists(int id)
+        private bool OrderExists(int id)
         {
             return _context.Orders.Any(e => e.OrderId == id);
         }

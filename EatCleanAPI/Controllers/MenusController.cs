@@ -22,37 +22,37 @@ namespace EatCleanAPI.Controllers
 
         // GET: api/Menus
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Menus>>> GetMenus()
+        public async Task<ActionResult<IEnumerable<Menu>>> GetMenus()
         {
             return await _context.Menus.ToListAsync();
         }
 
         // GET: api/Menus/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Menus>> GetMenus(int id)
+        public async Task<ActionResult<Menu>> GetMenu(int id)
         {
-            var menus = await _context.Menus.FindAsync(id);
+            var menu = await _context.Menus.FindAsync(id);
 
-            if (menus == null)
+            if (menu == null)
             {
                 return NotFound();
             }
 
-            return menus;
+            return menu;
         }
 
         // PUT: api/Menus/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMenus(int id, Menus menus)
+        public async Task<IActionResult> PutMenu(int id, Menu menu)
         {
-            if (id != menus.MenuId)
+            if (id != menu.MenuId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(menus).State = EntityState.Modified;
+            _context.Entry(menu).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace EatCleanAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MenusExists(id))
+                if (!MenuExists(id))
                 {
                     return NotFound();
                 }
@@ -77,45 +77,31 @@ namespace EatCleanAPI.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Menus>> PostMenus(Menus menus)
+        public async Task<ActionResult<Menu>> PostMenu(Menu menu)
         {
-            _context.Menus.Add(menus);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (MenusExists(menus.MenuId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _context.Menus.Add(menu);
+            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMenus", new { id = menus.MenuId }, menus);
+            return CreatedAtAction("GetMenu", new { id = menu.MenuId }, menu);
         }
 
         // DELETE: api/Menus/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Menus>> DeleteMenus(int id)
+        public async Task<ActionResult<Menu>> DeleteMenu(int id)
         {
-            var menus = await _context.Menus.FindAsync(id);
-            if (menus == null)
+            var menu = await _context.Menus.FindAsync(id);
+            if (menu == null)
             {
                 return NotFound();
             }
 
-            _context.Menus.Remove(menus);
+            _context.Menus.Remove(menu);
             await _context.SaveChangesAsync();
 
-            return menus;
+            return menu;
         }
 
-        private bool MenusExists(int id)
+        private bool MenuExists(int id)
         {
             return _context.Menus.Any(e => e.MenuId == id);
         }

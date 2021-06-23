@@ -1,9 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "oprKEoUUEqMyFTH6J8bC6Ab38xq4t1i+Ez/4XwDSCBUqlJZOoBnXcQxcf4QdfbV2j0LGf/baPgZZFgGN60HrVQ==",
+  "dgSpecHash": "yRcOm4vGM64ErkxG09oxpJTqQqICPedxFJQjEx2XzkBARG+SMMUD2+z0yfgJOBPjgAyrUSNJWhphbJw/7L3SjQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\HongThaiPC\\Desktop\\Practice\\EatCleanAPI\\EatCleanAPI\\EatCleanAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\HongThaiPC\\.nuget\\packages\\bricelam.entityframeworkcore.pluralizer\\1.0.0\\bricelam.entityframeworkcore.pluralizer.1.0.0.nupkg.sha512",
+    "C:\\Users\\HongThaiPC\\.nuget\\packages\\fluentvalidation\\10.2.3\\fluentvalidation.10.2.3.nupkg.sha512",
+    "C:\\Users\\HongThaiPC\\.nuget\\packages\\fluentvalidation.aspnetcore\\10.2.3\\fluentvalidation.aspnetcore.10.2.3.nupkg.sha512",
+    "C:\\Users\\HongThaiPC\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\10.2.3\\fluentvalidation.dependencyinjectionextensions.10.2.3.nupkg.sha512",
+    "C:\\Users\\HongThaiPC\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.1.16\\microsoft.aspnetcore.authentication.jwtbearer.3.1.16.nupkg.sha512",
     "C:\\Users\\HongThaiPC\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\HongThaiPC\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.1.16\\microsoft.aspnetcore.jsonpatch.3.1.16.nupkg.sha512",
     "C:\\Users\\HongThaiPC\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\3.1.16\\microsoft.aspnetcore.mvc.newtonsoftjson.3.1.16.nupkg.sha512",
