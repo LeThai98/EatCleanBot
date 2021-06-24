@@ -15,9 +15,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using EatCleanAPI.Catalog.Common;
 using EatCleanAPI.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace EatCleanAPI.Controllers
 {
+   // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -42,6 +45,7 @@ namespace EatCleanAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
+           
             return await _context.Users.ToListAsync();
         }
 
@@ -137,7 +141,7 @@ namespace EatCleanAPI.Controllers
                 // create 1 customer có refreshtoken
                 UsersWithToken customerWithToken = new UsersWithToken(customer);
                 // cấp lại access token cho customer
-                customerWithToken.AccessToken = GenerateAccessToken(customer.UserId);
+                customerWithToken.AccessToken = GenerateAccessToken(customer);
                 customerWithToken.RefreshToken = refreshRequest.RefreshToken;
                 return customerWithToken;
             }
@@ -213,9 +217,69 @@ namespace EatCleanAPI.Controllers
 
             return refreshToken;
         }
+
+        //public string GenerateToken(User user)
+        //{
+        //    // generate token that is valid for 7 days
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+        //    var tokenDescriptor = new SecurityTokenDescriptor
+        //    {
+        //        Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+        //        Expires = DateTime.UtcNow.AddDays(7),
+        //        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        //    };
+        //    var token = tokenHandler.CreateToken(tokenDescriptor);
+        //    return tokenHandler.WriteToken(token);
+        //}
+
+        //public int? ValidateToken(string token)
+        //{
+        //    if (token == null)
+        //        return null;
+
+        //    var tokenHandler = new JwtSecurityTokenHandler();
+        //    var key = Encoding.ASCII.GetBytes(_jwtsettings.Secret);
+        //    try
+        //    {
+        //        tokenHandler.ValidateToken(token, new TokenValidationParameters
+        //        {
+        //            ValidateIssuerSigningKey = true,
+        //            IssuerSigningKey = new SymmetricSecurityKey(key),
+        //            ValidateIssuer = false,
+        //            ValidateAudience = false,
+        //            // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
+        //            ClockSkew = TimeSpan.Zero
+        //        }, out SecurityToken validatedToken);
+
+        //        var jwtToken = (JwtSecurityToken)validatedToken;
+        //        var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
+
+        //        // return user id from JWT token if validation successful
+        //        return userId;
+        //    }
+        //    catch
+        //    {
+        //        // return null if validation fails
+        //        return null;
+        //    }
+        //}
+
+
         //Create token for SignIn
-        private string GenerateAccessToken(int userId)
+        private string GenerateAccessToken(User user)
         {
+            int userId = user.UserId;
+            string Name = user.Name;
+            string Email = user.Email;
+            string Pass = user.Password;
+            string Phone = user.PhoneNumber;
+            string Role = null;
+            if (user.IsAdmin == true)
+                Role = "Admin";
+            else
+                Role = "User";
+
             var tokenHandler = new JwtSecurityTokenHandler();
 
             // lấy secretkey để tạo ra phần signature cho accesstoken
@@ -224,7 +288,9 @@ namespace EatCleanAPI.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, Convert.ToString(userId))
+                    new Claim(ClaimTypes.Name, Name),
+                     new Claim(ClaimTypes.Email, Email),
+                       new Claim(ClaimTypes.Role, Role),
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
@@ -277,7 +343,7 @@ namespace EatCleanAPI.Controllers
 
             //    //sign your token here here..
             // tạo access token cho customer
-            customerWithToken.AccessToken = GenerateAccessToken(customer.UserId);
+            customerWithToken.AccessToken = GenerateAccessToken(customer);
 
             string access = customerWithToken.AccessToken;
 
@@ -286,11 +352,12 @@ namespace EatCleanAPI.Controllers
             return new ApiErrorResult<string>("Đăng nhập thành công")
             {
                 IsSuccessed = true,
-                usersWithToken = customerWithToken,
+                JwtToken = access
 
             };
 
-
+            //IsSuccessed = true,
+             //   usersWithToken = customerWithToken,
 
         }
 

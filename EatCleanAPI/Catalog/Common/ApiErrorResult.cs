@@ -17,6 +17,8 @@ namespace EatCleanAPI.Catalog.Common
         {
             IsSuccessed = false;
             Message = message;
+            JwtToken = null;
+            
         }
 
         public ApiErrorResult(string[] validationErrors)

@@ -11,6 +11,7 @@ namespace EatCleanAPI.Catalog.Common
         public bool IsSuccessed { get; set; }
 
         public string Message { get; set; }
+        public string JwtToken { get; set; }
 
         public UsersWithToken usersWithToken { get; set; }
 
