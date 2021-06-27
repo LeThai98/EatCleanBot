@@ -352,7 +352,8 @@ namespace EatCleanAPI.Controllers
             return new ApiErrorResult<string>("Đăng nhập thành công")
             {
                 IsSuccessed = true,
-                JwtToken = access
+                JwtToken = access,
+                usersWithToken = customerWithToken
 
             };
 

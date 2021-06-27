@@ -115,7 +115,7 @@ namespace EatCleanAPI.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(Order order)
+        public async Task<ActionResult<Order>> PostOrder([FromForm]Order order)
         {
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();

@@ -251,7 +251,7 @@ namespace EatCleanAPI.Models
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
-                    .HasColumnType("ntext");
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.Password)
                     .HasColumnName("password")

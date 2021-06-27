@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "MKeYuqnX0QxzSV+u3A906H/qdE+8XlA021UYhC83Ld7LMwZQqV6PCBJbSsaA8zpIsTkaYr3IUXpVVftV7xtu+A==",
+  "dgSpecHash": "5jBrZ5vYPg0HE0HUnQ3peVvBf+V+6kwpQ7qe2Ryqzx60Vo09LvL6Tz1FrLFFpda293I1L1tfvHqDfDjR3MTFLw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\HongThaiPC\\Desktop\\EatCleanAPI\\EatCleanAPI\\EatCleanAPI.csproj",
+  "projectFilePath": "C:\\Users\\HongThaiPC\\Desktop\\Practice\\EatCleanAPI\\EatCleanAPI\\EatCleanAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HongThaiPC\\.nuget\\packages\\bricelam.entityframeworkcore.pluralizer\\1.0.0\\bricelam.entityframeworkcore.pluralizer.1.0.0.nupkg.sha512",
     "C:\\Users\\HongThaiPC\\.nuget\\packages\\fluentvalidation\\10.2.3\\fluentvalidation.10.2.3.nupkg.sha512",
