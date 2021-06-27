@@ -16,7 +16,7 @@ namespace EatCleanAPI.Models
 
         public int OrderId { get; set; }
         public int? UserId { get; set; }
-        public int? PaymentId { get; set; }
+        public string PaymentId { get; set; }
         public string Address { get; set; }
         public string PaypalMethod { get; set; }
         public int? OrderStatus { get; set; }
@@ -26,8 +26,9 @@ namespace EatCleanAPI.Models
         public string PaidAt { get; set; }
         public bool? IsDelivered { get; set; }
         public string DeliveredAt { get; set; }
+        public string UpdateTime { get; set; }
+        public string EmailAddress { get; set; }
 
-        public virtual Payment Payment { get; set; }
         public virtual User User { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }

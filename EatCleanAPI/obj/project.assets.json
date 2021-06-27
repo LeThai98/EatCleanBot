@@ -8970,11 +8970,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\HongThaiPC\\Desktop\\Practice\\EatCleanAPI\\EatCleanAPI\\EatCleanAPI.csproj",
+      "projectUniqueName": "C:\\Users\\HongThaiPC\\Desktop\\EatCleanAPI\\EatCleanAPI\\EatCleanAPI.csproj",
       "projectName": "EatCleanAPI",
-      "projectPath": "C:\\Users\\HongThaiPC\\Desktop\\Practice\\EatCleanAPI\\EatCleanAPI\\EatCleanAPI.csproj",
+      "projectPath": "C:\\Users\\HongThaiPC\\Desktop\\EatCleanAPI\\EatCleanAPI\\EatCleanAPI.csproj",
       "packagesPath": "C:\\Users\\HongThaiPC\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\HongThaiPC\\Desktop\\Practice\\EatCleanAPI\\EatCleanAPI\\obj\\",
+      "outputPath": "C:\\Users\\HongThaiPC\\Desktop\\EatCleanAPI\\EatCleanAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\HongThaiPC\\AppData\\Roaming\\NuGet\\NuGet.Config",

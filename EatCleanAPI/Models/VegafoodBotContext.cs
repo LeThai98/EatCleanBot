@@ -19,13 +19,11 @@ namespace EatCleanAPI.Models
         {
         }
 
-        public virtual DbSet<AppRole> AppRoles { get; set; }
         public virtual DbSet<CustomerSentiment> CustomerSentiments { get; set; }
         public virtual DbSet<Menu> Menus { get; set; }
         public virtual DbSet<MenusDetail> MenusDetails { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
-        public virtual DbSet<Payment> Payments { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         public virtual DbSet<User> Users { get; set; }
@@ -40,15 +38,6 @@ namespace EatCleanAPI.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AppRole>(entity =>
-            {
-                entity.ToTable("AppRole");
-
-                entity.Property(e => e.Description).HasMaxLength(50);
-
-                entity.Property(e => e.Name).HasMaxLength(30);
-            });
-
             modelBuilder.Entity<CustomerSentiment>(entity =>
             {
                 entity.ToTable("CustomerSentiment");
@@ -86,7 +75,7 @@ namespace EatCleanAPI.Models
 
                 entity.Property(e => e.Description)
                     .HasColumnName("description")
-                    .HasMaxLength(50);
+                    .HasColumnType("ntext");
 
                 entity.Property(e => e.Image)
                     .HasColumnName("image")
@@ -94,7 +83,7 @@ namespace EatCleanAPI.Models
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
-                    .HasMaxLength(50);
+                    .HasColumnType("ntext");
             });
 
             modelBuilder.Entity<MenusDetail>(entity =>
@@ -129,12 +118,15 @@ namespace EatCleanAPI.Models
 
                 entity.Property(e => e.Address)
                     .HasColumnName("address")
-                    .HasMaxLength(50);
+                    .HasColumnType("ntext");
 
                 entity.Property(e => e.DeliveredAt)
                     .HasColumnName("deliveredAt")
-                    .HasMaxLength(30)
-                    .IsFixedLength();
+                    .HasColumnType("ntext");
+
+                entity.Property(e => e.EmailAddress)
+                    .HasColumnName("email_address")
+                    .HasColumnType("ntext");
 
                 entity.Property(e => e.IsDelivered).HasColumnName("isDelivered");
 
@@ -144,10 +136,11 @@ namespace EatCleanAPI.Models
 
                 entity.Property(e => e.PaidAt)
                     .HasColumnName("paidAt")
-                    .HasMaxLength(30)
-                    .IsFixedLength();
+                    .HasColumnType("ntext");
 
-                entity.Property(e => e.PaymentId).HasColumnName("paymentId");
+                entity.Property(e => e.PaymentId)
+                    .HasColumnName("paymentId")
+                    .HasColumnType("ntext");
 
                 entity.Property(e => e.PaypalMethod)
                     .HasColumnName("paypalMethod")
@@ -157,12 +150,11 @@ namespace EatCleanAPI.Models
 
                 entity.Property(e => e.TotalPrice).HasColumnName("totalPrice");
 
-                entity.Property(e => e.UserId).HasColumnName("userId");
+                entity.Property(e => e.UpdateTime)
+                    .HasColumnName("update_time")
+                    .HasColumnType("text");
 
-                entity.HasOne(d => d.Payment)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.PaymentId)
-                    .HasConstraintName("FK_Orders_Payments");
+                entity.Property(e => e.UserId).HasColumnName("userId");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Orders)
@@ -190,22 +182,6 @@ namespace EatCleanAPI.Models
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OrderDetails_Orders");
-            });
-
-            modelBuilder.Entity<Payment>(entity =>
-            {
-                entity.Property(e => e.PaymentId).HasColumnName("paymentId");
-
-                entity.Property(e => e.EmailAddress)
-                    .HasColumnName("email_address")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Status).HasColumnName("status");
-
-                entity.Property(e => e.UpdateTime)
-                    .HasColumnName("update_time")
-                    .HasMaxLength(30)
-                    .IsFixedLength();
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -240,7 +216,7 @@ namespace EatCleanAPI.Models
             modelBuilder.Entity<RefreshToken>(entity =>
             {
                 entity.HasKey(e => e.TokenId)
-                    .HasName("PK__RefreshT__CB3C9E1728955239");
+                    .HasName("PK__RefreshT__CB3C9E17FBB0B267");
 
                 entity.ToTable("RefreshToken");
 
@@ -275,7 +251,7 @@ namespace EatCleanAPI.Models
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
-                    .HasMaxLength(30);
+                    .HasColumnType("ntext");
 
                 entity.Property(e => e.Password)
                     .HasColumnName("password")
