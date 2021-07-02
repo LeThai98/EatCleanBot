@@ -363,19 +363,28 @@ namespace EatCleanAPI.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<ActionResult<ApiResult<bool>>> Register([FromForm] RegisterRequest request)
+        public async Task<ActionResult<ApiResult<string>>> Register([FromForm] RegisterRequest request)
         {
             // thực hiện validate trên viewmodel trước, nếu validate ko thành công
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (_context.Users.Where(cus => cus.Name == request.CustomerName).FirstOrDefault() != null)
-            {
-                return new ApiErrorResult<bool>("Tài khoản đã tồn tại");
-            }
+            //if (_context.Users.Where(cus => cus.Name == request.CustomerName).FirstOrDefault() != null)
+            //{
+            //    return new ApiErrorResult<string>("Tài khoản đã tồn tại")
+            //    {
+            //        IsSuccessed = false,
+                   
+            //    };
+            //}
+
             // email đã đc 1 customer đăng kí rồi
             if (_context.Users.Where(cus => cus.Email == request.Email).FirstOrDefault() != null)
-                return new ApiErrorResult<bool>("Emai đã tồn tại");
+                return new ApiErrorResult<string>("Email đã tồn tại")
+                {
+                    IsSuccessed = false,
+
+                };
 
 
             var customer = new User()
@@ -386,9 +395,46 @@ namespace EatCleanAPI.Controllers
                 Password = request.Password,
                 Email = request.Email
             };
+
             _context.Users.Add(customer);
             await _context.SaveChangesAsync();
-            return new ApiSuccessResult<bool>() { Message = "Đăng kí thành công" };
+
+
+            UsersWithToken customerWithToken = new UsersWithToken(customer);
+
+            // nếu có customer trong db
+            if (customer != null)
+            {
+                // tạo ra refreshToken 
+                RefreshToken refreshToken = GenerateRefreshToken();
+                // add refreshtoken cho customer 
+                customer.RefreshTokens.Add(refreshToken);
+                // save việc insert đối tượng vào trong csdl 
+                await _context.SaveChangesAsync();
+
+                // tạo 1 đối tượng customerwithToken truyền vào là customer đã có refreshtoken
+                customerWithToken = new UsersWithToken(customer);
+                // đối tượng customerWithToken đc đc refreshtoken
+                customerWithToken.RefreshToken = refreshToken.Token;
+            }
+
+            //    //sign your token here here..
+            // tạo access token cho customer
+            customerWithToken.AccessToken = GenerateAccessToken(customer);
+
+            string access = customerWithToken.AccessToken;
+
+            string refresh = customerWithToken.RefreshToken;
+
+            return new ApiErrorResult<string>("Đăng nhập thành công")
+            {
+                IsSuccessed = true,
+                JwtToken = access,
+                usersWithToken = customerWithToken
+
+            };
+
+            //return new ApiSuccessResult<bool>() { Message = "Đăng kí thành công" };
 
             // khi validate đã success thì tiến hành đăng kí với đối tượng truyền vào là ViewModel RegisterRequest
             // Lấy thông tin của ViewModel truyền xuống cho Model rồi lưu vào DB
